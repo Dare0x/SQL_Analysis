@@ -6,8 +6,8 @@ from layoffs;
  create table layoffs_staging
  like layoffs;
 
-select * 
-from layoffs_staging6;
+select *
+from layoffs_staging;
 
 insert into layoffs_staging
 select *
@@ -47,6 +47,11 @@ select *,
 row_number() over(
 Partition by company,industry,location,country,stage,funds_raised_millions,total_laid_off,percentage_laid_off,`date`) row_num
 from layoffs_staging;
+
+-- delete the duplicates: row_num > 1 means the row repeats an earlier one
+delete
+from layoffs_staging6
+where row_num > 1;
 
 select `date`
 from layoffs_staging6;
